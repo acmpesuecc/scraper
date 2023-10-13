@@ -5,6 +5,7 @@ from time import sleep
 import csv
 import sys
 import mysql.connector
+from plyer import notification
 
 campus = sys.argv[1]
 year = sys.argv[2]
@@ -126,3 +127,10 @@ browser.close()
 print("Browser closed")
 database.close()
 print("db closed")
+
+notification.notify(
+    title = 'Scraper Bot',
+    message = 'Finished the task',
+    app_icon = None,
+    timeout = 15,
+)

@@ -5,31 +5,39 @@ from time import sleep
 import csv
 import sys
 import mysql.connector
+from plyer import notification
 
-c = sys.argv[1]
-yr = sys.argv[2]
+c = sys.argv[0]
+yr = sys.argv[0]
 if (c == "ec"):
     st = "PES2"
 else:
     st = "PES1"
 
 
+notification.notify(
+    title = "redirect",
+    message = 'You are being redirected to the telegram bot',
+    timeout = 5
+)
+
 print("Running")
 opts = Options()
 opts.headless = True
 browser = Firefox(options=opts)
 print("Browser running")
-fName = "batch_of_" + yr + ".csv"
-f = open(fName, "a")
+name = "batch_of_" + yr + ".csv"
+print(name)
+
 f1 = open("errors.txt", "a")
 print("Files created")
 
 
 database = mysql.connector.connect(
-    user='pes_people_bot',
-    password='super_secure_password',
+    user='root@localhost',
+    password='abcd',
     host='localhost',
-    database='pes_people'
+    database='ded'
 )
 
 print("db connected")
@@ -95,7 +103,7 @@ for i in range(1, 4000):
             cycle + "," + strCamp + "," + stream + "," + campus + "," + name
         print("Got for", prn)
 
-        f.write(strRow + "\n")
+        f1.write(strRow + "\n")
 
         clas = (semValue+"_"+strCamp+"_"+section+"_"+cycle).replace(" ", "_")
         clas = clas.replace("-", "_")
@@ -119,7 +127,7 @@ for i in range(1, 4000):
     except Exception as e:
         f1.write(inputPRN+"\n")
         print(inputPRN, "error", e)
-f.close()
+
 f1.close()
 print("File closed")
 browser.close()

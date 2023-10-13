@@ -60,7 +60,7 @@ for i in range(1, 4000):
     try:
         browser.find_element(By.ID, "knowClsSectionModalSearch").click()
         sleep(1)
-        semisterValue = browser.find_element(
+        semesterValue = browser.find_element(
             By.XPATH, "//*[@id='knowClsSectionModalTableDate']/tr/td[4]").text
 
         strCamp = browser.find_element(
@@ -71,8 +71,8 @@ for i in range(1, 4000):
 
         section = browser.find_element(
             By.XPATH, "//*[@id='knowClsSectionModalTableDate']/tr/td[5]").text
-        if ("CIE" in semisterValue):
-            semisterValue = browser.find_element(
+        if ("CIE" in semesterValue):
+            semesterValue = browser.find_element(
                 By.XPATH, "//*[@id='knowClsSectionModalTableDate']/tr[2]/td[4]").text
             strCamp = browser.find_element(
                 By.XPATH, "//*[@id='knowClsSectionModalTableDate']/tr[2]/td[7]").text
@@ -91,13 +91,13 @@ for i in range(1, 4000):
             By.XPATH, "//*[@id='knowClsSectionModalTableDate']/tr/td[8]").text
         name = browser.find_element(
             By.XPATH, "//*[@id='knowClsSectionModalTableDate']/tr/td[3]").text
-        strRow = prn + "," + srn + "," + semisterValue + "," + section + "," + \
+        strRow = prn + "," + srn + "," + semesterValue + "," + section + "," + \
             cycle + "," + strCamp + "," + stream + "," + campus + "," + name
         print("Got for", prn)
 
         f.write(strRow + "\n")
 
-        clas = (semisterValue+"_"+strCamp+"_"+section+"_"+cycle).replace(" ", "_")
+        clas = (semesterValue+"_"+strCamp+"_"+section+"_"+cycle).replace(" ", "_")
         clas = clas.replace("-", "_")
         clas = clas.replace("(", "")
         clas = clas.replace(")", "")

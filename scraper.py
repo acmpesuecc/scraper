@@ -6,6 +6,14 @@ import csv
 import sys
 import mysql.connector
 from plyer import notification
+from telegram import Update
+from telegram.ext import (
+Application,
+CallbackContext,
+CommandHandler,
+MessageHandler,
+filters
+)
 
 c = sys.argv[0]
 yr = sys.argv[0]
@@ -15,11 +23,15 @@ else:
     st = "PES1"
 
 
-notification.notify(
-    title = "redirect",
-    message = 'You are being redirected to the telegram bot',
-    timeout = 5
-)
+# notification.notify(
+#     title = "redirect",
+#     message = 'You are being redirected to the telegram bot',
+#     timeout = 5
+
+application = Application.builder().token("YOUR API TOKEN HERE").build()
+print("Successfully connected to Telegram API")
+async def start(update: Update, context: CallbackContext):
+    await update.message.reply_text("Hello! I am a bot that is going to mimic you :)")
 
 print("Running")
 opts = Options()

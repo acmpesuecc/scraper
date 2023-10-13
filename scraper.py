@@ -6,9 +6,9 @@ import csv
 import sys
 import mysql.connector
 
-c = sys.argv[1]
-yr = sys.argv[2]
-if (c == "ec"):
+branch = sys.argv[1]
+year = sys.argv[2]
+if (branch == "ec"):
     st = "PES2"
 else:
     st = "PES1"
@@ -19,8 +19,8 @@ opts = Options()
 opts.headless = True
 browser = Firefox(options=opts)
 print("Browser running")
-fName = "batch_of_" + yr + ".csv"
-f = open(fName, "a")
+fileName = "batch_of_" + yr + ".csv"
+f = open(fileName, "a")
 f1 = open("errors.txt", "a")
 print("Files created")
 
@@ -38,8 +38,8 @@ cursor = database.cursor()
 
 cursor.execute("show tables")
 show_tables_query = cursor.fetchall()
-classes_already_in_db = [table[0] for table in show_tables_query]
-print(classes_already_in_db)
+classes_in_db = [table[0] for table in show_tables_query]
+print(classes_in_db)
 
 
 for i in range(1, 4000):
@@ -55,12 +55,12 @@ for i in range(1, 4000):
     sleep(2)
     browser.find_element(By.ID, "knowClsSection").click()
     inp = browser.find_element(By.ID, "knowClsSectionModalLoginId")
-    inputPRN = st + yr + "0" + s
+    inputPRN = st + year + "0" + s
     inp.send_keys(inputPRN)
     try:
         browser.find_element(By.ID, "knowClsSectionModalSearch").click()
         sleep(1)
-        semValue = browser.find_element(
+        semisterValue = browser.find_element(
             By.XPATH, "//*[@id='knowClsSectionModalTableDate']/tr/td[4]").text
 
         strCamp = browser.find_element(
@@ -71,8 +71,8 @@ for i in range(1, 4000):
 
         section = browser.find_element(
             By.XPATH, "//*[@id='knowClsSectionModalTableDate']/tr/td[5]").text
-        if ("CIE" in semValue):
-            semValue = browser.find_element(
+        if ("CIE" in semisterValue):
+            semisterValue = browser.find_element(
                 By.XPATH, "//*[@id='knowClsSectionModalTableDate']/tr[2]/td[4]").text
             strCamp = browser.find_element(
                 By.XPATH, "//*[@id='knowClsSectionModalTableDate']/tr[2]/td[7]").text
@@ -91,21 +91,21 @@ for i in range(1, 4000):
             By.XPATH, "//*[@id='knowClsSectionModalTableDate']/tr/td[8]").text
         name = browser.find_element(
             By.XPATH, "//*[@id='knowClsSectionModalTableDate']/tr/td[3]").text
-        strRow = prn + "," + srn + "," + semValue + "," + section + "," + \
+        strRow = prn + "," + srn + "," + semisterValue + "," + section + "," + \
             cycle + "," + strCamp + "," + stream + "," + campus + "," + name
         print("Got for", prn)
 
         f.write(strRow + "\n")
 
-        clas = (semValue+"_"+strCamp+"_"+section+"_"+cycle).replace(" ", "_")
+        clas = (semisterValue+"_"+strCamp+"_"+section+"_"+cycle).replace(" ", "_")
         clas = clas.replace("-", "_")
         clas = clas.replace("(", "")
         clas = clas.replace(")", "")
         clas = clas.replace(".", "")
         clas = clas.replace("&", "and")
 
-        if clas not in classes_already_in_db:
-            classes_already_in_db.append(clas)
+        if clas not in classes_in_db:
+            classes_in_db.append(clas)
             query = f"create table {clas}(PRN varchar(32), SRN varchar(32), Name varchar(64))"
             print(query)
             cursor.execute(query)

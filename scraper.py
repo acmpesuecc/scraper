@@ -6,12 +6,12 @@ import csv
 import sys
 import mysql.connector
 
-c = sys.argv[1]
-yr = sys.argv[2]
-if (c == "ec"):
-    st = "PES2"
+campus = sys.argv[1]
+year = sys.argv[2]
+if (campus == "ec"):
+    campusCode = "PES2"
 else:
-    st = "PES1"
+    campusCode = "PES1"
 
 
 print("Running")
@@ -19,7 +19,7 @@ opts = Options()
 opts.headless = True
 browser = Firefox(options=opts)
 print("Browser running")
-fName = "batch_of_" + yr + ".csv"
+fName = "batch_of_" + year + ".csv"
 f = open(fName, "a")
 f1 = open("errors.txt", "a")
 print("Files created")
@@ -44,18 +44,18 @@ print(classes_already_in_db)
 
 for i in range(1, 4000):
     if (i >= 1 and i <= 9):
-        s = "000" + str(i)
+        studentId = "000" + str(i)
     elif (i >= 10 and i <= 99):
-        s = "00" + str(i)
+        studentId = "00" + str(i)
     elif (i >= 100 and i <= 999):
-        s = "0" + str(i)
+        studentId = "0" + str(i)
     else:
-        s = str(i)
+        studentId = str(i)
     browser.get('https://pesuacademy.com')
     sleep(2)
     browser.find_element(By.ID, "knowClsSection").click()
     inp = browser.find_element(By.ID, "knowClsSectionModalLoginId")
-    inputPRN = st + yr + "0" + s
+    inputPRN = campusCode + year + "0" + studentId
     inp.send_keys(inputPRN)
     try:
         browser.find_element(By.ID, "knowClsSectionModalSearch").click()

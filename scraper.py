@@ -7,12 +7,12 @@ import sys
 import mysql.connector
 from plyer import notification
 
-campus = sys.argv[1]
-year = sys.argv[2]
-if (campus == "ec"):
-    campusCode = "PES2"
+c = sys.argv[1]
+yr = sys.argv[2]
+if (c == "ec"):
+    st = "PES2"
 else:
-    campusCode = "PES1"
+    st = "PES1"
 
 
 print("Running")
@@ -20,7 +20,7 @@ opts = Options()
 opts.headless = True
 browser = Firefox(options=opts)
 print("Browser running")
-fName = "batch_of_" + year + ".csv"
+fName = "batch_of_" + yr + ".csv"
 f = open(fName, "a")
 f1 = open("errors.txt", "a")
 print("Files created")
@@ -45,18 +45,18 @@ print(classes_already_in_db)
 
 for i in range(1, 4000):
     if (i >= 1 and i <= 9):
-        studentId = "000" + str(i)
+        s = "000" + str(i)
     elif (i >= 10 and i <= 99):
-        studentId = "00" + str(i)
+        s = "00" + str(i)
     elif (i >= 100 and i <= 999):
-        studentId = "0" + str(i)
+        s = "0" + str(i)
     else:
-        studentId = str(i)
+        s = str(i)
     browser.get('https://pesuacademy.com')
     sleep(2)
     browser.find_element(By.ID, "knowClsSection").click()
     inp = browser.find_element(By.ID, "knowClsSectionModalLoginId")
-    inputPRN = campusCode + year + "0" + studentId
+    inputPRN = st + yr + "0" + s
     inp.send_keys(inputPRN)
     try:
         browser.find_element(By.ID, "knowClsSectionModalSearch").click()
@@ -127,7 +127,6 @@ browser.close()
 print("Browser closed")
 database.close()
 print("db closed")
-
 notification.notify(
     title = 'Scraper Bot',
     message = 'Finished the task',
